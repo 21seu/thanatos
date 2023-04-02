@@ -10,5 +10,5 @@ public interface OpenAiChatService {
      * @param prompt
      * @return
      */
-    public String chat(String prompt);
+    String chat(String prompt);
 }

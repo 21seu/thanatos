@@ -1,14 +1,19 @@
 package com.ai.service.impl;
 
+import com.ai.properties.OpenAiProperties;
 import com.ai.service.OpenAiChatService;
 import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.unfbx.chatgpt.OpenAiClient;
+import com.unfbx.chatgpt.entity.completions.CompletionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
 
 /**
  * Created by fengtj on 2023/4/2 16:39
@@ -17,26 +22,16 @@ import org.springframework.util.StringUtils;
 @Service
 public class OpenAiChatServiceImpl implements OpenAiChatService {
 
-    @Value("${open.ai.model}")
-    private String openAiModel;
+
     @Autowired
-    private OpenAiService openAiService;
+    private OpenAiClient openAiClient;
 
 
     @Override
     public String chat(String prompt) {
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt(prompt)
-                .model(openAiModel)
-                .echo(true)
-                .temperature(0.7)
-                .topP(1d)
-                .frequencyPenalty(0d)
-                .presencePenalty(0d)
-                .maxTokens(1000)
-                .build();
-        CompletionResult completionResult = openAiService.createCompletion(completionRequest);
-        String text = completionResult.getChoices().get(0).getText();
+        CompletionResponse completions = openAiClient.completions(prompt);
+        String text = completions.getChoices()[0].getText().trim();
+        log.info("text:{}", text);
         return text;
     }
 }
