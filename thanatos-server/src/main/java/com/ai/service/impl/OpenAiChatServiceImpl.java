@@ -31,7 +31,7 @@ public class OpenAiChatServiceImpl implements OpenAiChatService {
     public String chat(String prompt) {
         CompletionResponse completions = openAiClient.completions(prompt);
         String text = completions.getChoices()[0].getText().trim();
-        log.info("text:{}", text);
+        log.info("response:{}", text);
         return text;
     }
 }

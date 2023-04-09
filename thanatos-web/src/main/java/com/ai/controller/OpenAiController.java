@@ -1,6 +1,7 @@
 package com.ai.controller;
 
 import com.ai.service.OpenAiChatService;
+import com.ai.utils.R;
 import com.unfbx.chatgpt.OpenAiClient;
 import com.unfbx.chatgpt.entity.completions.CompletionResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,9 @@ public class OpenAiController {
     private OpenAiChatService openAiChatService;
 
     @GetMapping("/chat")
-    public String openAiChat(@RequestParam("question")String question){
-        log.info("question:{}", question);
-        return openAiChatService.chat(question);
+    public R openAiChat(@RequestParam("question")String question){
+        log.info("request params:{}", question);
+        String text = openAiChatService.chat(question);
+        return R.success(text);
     }
 }
